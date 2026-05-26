@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Dashboard</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f3f4f6;
+    }
+
+    nav{
+      background:#111827;
+      color:white;
+      padding:15px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    nav h1{
+      font-size:28px;
+    }
+
+    .container{
+      padding:40px;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:40px;
+      font-size:40px;
+      color:#111827;
+    }
+
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:
+      repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+      margin-bottom:50px;
+    }
+
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .card h2{
+      color:#2563eb;
+      margin-bottom:15px;
+      font-size:35px;
+    }
+
+    .card p{
+      color:gray;
+      font-size:18px;
+    }
+
+    .product-section{
+      background:white;
+      padding:30px;
+      border-radius:15px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .product-section h2{
+      margin-bottom:25px;
+      color:#111827;
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    .input-group input{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:16px;
+    }
+
+    .add-btn{
+      width:100%;
+      padding:14px;
+      border:none;
+      background:#2563eb;
+      color:white;
+      font-size:16px;
+      border-radius:8px;
+      cursor:pointer;
+      margin-bottom:30px;
+    }
+
+    .product-list{
+      display:flex;
+      flex-direction:column;
+      gap:15px;
+    }
+
+    .product-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      background:#f9fafb;
+      padding:15px;
+      border-radius:10px;
+    }
+
+    .delete-btn{
+      padding:8px 16px;
+      border:none;
+      background:red;
+      color:white;
+      border-radius:6px;
+      cursor:pointer;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <nav>
+
+    <h1>Admin Dashboard</h1>
+
+  </nav>
+
+  <div class="container">
+
+    <h2 class="title">
+      Admin Panel
+    </h2>
+
+    <div class="dashboard-grid">
+
+      <div class="card">
+
+        <h2 id="totalProducts">
+          0
+        </h2>
+
+        <p>Total Products</p>
+
+      </div>
+
+      <div class="card">
+
+        <h2 id="totalOrders">
+          0
+        </h2>
+
+        <p>Total Orders</p>
+
+      </div>
+
+      <div class="card">
+
+        <h2 id="totalUsers">
+          1
+        </h2>
+
+        <p>Total Users</p>
+
+      </div>
+
+    </div>
+
+    <div class="product-section">
+
+      <h2>Add Product</h2>
+
+      <div class="input-group">
+
+        <input
+        type="text"
+        id="productName"
+        placeholder="Product Name">
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+        type="number"
+        id="productPrice"
+        placeholder="Product Price">
+
+      </div>
+
+      <div class="input-group">
+
+        <input
+        type="text"
+        id="productImage"
+        placeholder="Product Image URL">
+
+      </div>
+
+      <button class="add-btn"
+      onclick="addProduct()">
+
+        Add Product
+
+      </button>
+
+      <div class="product-list"
+      id="productList">
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    let products =
+    JSON.parse(localStorage.getItem("adminProducts"))
+    || [];
+
+    const orders =
+    JSON.parse(localStorage.getItem("orders"))
+    || [];
+
+    document.getElementById("totalOrders")
+    .innerHTML = orders.length;
+
+    function updateDashboard(){
+
+      document.getElementById("totalProducts")
+      .innerHTML = products.length;
+
+      const productList =
+      document.getElementById("productList");
+
+      productList.innerHTML = "";
+
+      products.forEach((product,index) => {
+
+        productList.innerHTML += `
+
+        <div class="product-item">
+
+          <div>
+
+            <h3>${product.name}</h3>
+
+            <p>$${product.price}</p>
+
+          </div>
+
+          <button class="delete-btn"
+          onclick="deleteProduct(${index})">
+
+            Delete
+
+          </button>
+
+        </div>
+
+        `;
+
+      });
+
+    }
+
+    updateDashboard();
+
+    function addProduct(){
+
+      const name =
+      document.getElementById("productName")
+      .value;
+
+      const price =
+      document.getElementById("productPrice")
+      .value;
+
+      const image =
+      document.getElementById("productImage")
+      .value;
+
+      if(name === "" ||
+      price === "" ||
+      image === ""){
+
+        alert("Please Fill All Fields");
+
+        return;
+
+      }
+
+      const product = {
+        name:name,
+        price:price,
+        image:image
+      };
+
+      products.push(product);
+
+      localStorage.setItem(
+        "adminProducts",
+        JSON.stringify(products)
+      );
+
+      updateDashboard();
+
+      alert("Product Added");
+
+      document.getElementById("productName")
+      .value = "";
+
+      document.getElementById("productPrice")
+      .value = "";
+
+      document.getElementById("productImage")
+      .value = "";
+
+    }
+
+    function deleteProduct(index){
+
+      products.splice(index,1);
+
+      localStorage.setItem(
+        "adminProducts",
+        JSON.stringify(products)
+      );
+
+      updateDashboard();
+
+    }
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f3f4f6;
+    }
+
+    nav{
+      background:white;
+      padding:15px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav h1{
+      color:#2563eb;
+      font-size:28px;
+    }
+
+    .container{
+      max-width:700px;
+      margin:50px auto;
+      background:white;
+      padding:40px;
+      border-radius:15px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .container h2{
+      text-align:center;
+      margin-bottom:30px;
+      color:#111827;
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    .input-group label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select{
+      width:100%;
+      padding:12px;
+      border:1px solid #ccc;
+      border-radius:8px;
+      font-size:16px;
+    }
+
+    .summary{
+      margin-top:30px;
+      background:#f9fafb;
+      padding:20px;
+      border-radius:10px;
+    }
+
+    .summary h3{
+      margin-bottom:15px;
+    }
+
+    .place-order-btn{
+      width:100%;
+      padding:15px;
+      background:#2563eb;
+      color:white;
+      border:none;
+      border-radius:8px;
+      font-size:18px;
+      cursor:pointer;
+      margin-top:30px;
+    }
+
+    .place-order-btn:hover{
+      background:#1d4ed8;
+    }
+
+    footer{
+      background:#111827;
+      color:white;
+      text-align:center;
+      padding:20px;
+      margin-top:50px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <nav>
+
+    <h1>ShopEasy</h1>
+
+  </nav>
+
+  <div class="container">
+
+    <h2>Checkout</h2>
+
+    <form onsubmit="placeOrder(event)">
+
+      <div class="input-group">
+
+        <label>Full Name</label>
+
+        <input type="text" placeholder="Enter full name" required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Email</label>
+
+        <input type="email" placeholder="Enter email" required>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Address</label>
+
+        <textarea rows="4" placeholder="Enter address" required></textarea>
+
+      </div>
+
+      <div class="input-group">
+
+        <label>Payment Method</label>
+
+        <select required>
+          <option>Cash on Delivery</option>
+          <option>UPI</option>
+          <option>Credit Card</option>
+          <option>Gpay</option>
+          <option>phonepay</option>
+        </select>
+
+      </div>
+
+      <div class="summary">
+
+        <h3>Order Summary</h3>
+
+        <p>Wireless Headphones - $99</p>
+
+        <br>
+
+        <h3>Total: $99</h3>
+
+      </div>
+
+      <button type="submit" class="place-order-btn" >
+        Place Order
+      </button>
+
+    </form>
+
+  </div>
+
+  <footer>
+    <p>© 2026 ShopEasy. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+
+   function placeOrder(event){
+
+  event.preventDefault();
+
+  let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+let orders =
+JSON.parse(localStorage.getItem("orders")) || [];
+
+const order = {
+  items:cart,
+  date:new Date().toLocaleString()
+};
+
+orders.push(order);
+
+localStorage.setItem(
+  "orders",
+  JSON.stringify(orders)
+);
+
+window.location.href =
+"success.html";
+
+}
+
+  </script>
+
+</body>
+</html>

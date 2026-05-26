@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+  <title>Orders</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+      background:#f3f4f6;
+    }
+
+    nav{
+      background:white;
+      padding:15px 40px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    nav h1{
+      color:#2563eb;
+      font-size:28px;
+    }
+
+    nav ul{
+      display:flex;
+      list-style:none;
+      gap:25px;
+    }
+
+    nav ul li a{
+      text-decoration:none;
+      color:black;
+      font-weight:500;
+    }
+
+    .container{
+      padding:40px;
+    }
+
+    .title{
+      text-align:center;
+      margin-bottom:40px;
+      font-size:40px;
+    }
+
+    .order-box{
+      background:white;
+      padding:30px;
+      border-radius:15px;
+      margin-bottom:30px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .order-box h3{
+      margin-bottom:20px;
+      color:#2563eb;
+    }
+
+    .item{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:15px;
+      border-bottom:1px solid #ddd;
+      padding-bottom:10px;
+    }
+
+    .total{
+      margin-top:20px;
+      font-size:22px;
+      font-weight:bold;
+      color:#2563eb;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <nav>
+
+    <h1>ShopEasy</h1>
+
+    <ul>
+
+      <li><a href="home.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="orders.html">Orders</a></li>
+
+    </ul>
+
+  </nav>
+
+  <div class="container">
+
+    <h2 class="title">
+      My Orders
+    </h2>
+
+    <div id="ordersContainer">
+
+    </div>
+
+  </div>
+
+  <script>
+
+    const orders =
+    JSON.parse(localStorage.getItem("orders")) || [];
+
+    const container =
+    document.getElementById("ordersContainer");
+
+    if(orders.length === 0){
+
+      container.innerHTML =
+      "<h2>No Orders Found</h2>";
+
+    }
+
+    orders.forEach(order => {
+
+      let total = 0;
+
+      let itemsHTML = "";
+
+      order.items.forEach(item => {
+
+        total +=
+        item.price * item.quantity;
+
+        itemsHTML += `
+
+        <div class="item">
+
+          <div>
+
+            <h4>${item.name}</h4>
+
+            <p>
+              Quantity:
+              ${item.quantity}
+            </p>
+
+          </div>
+
+          <div>
+
+            $${item.price}
+
+          </div>
+
+        </div>
+
+        `;
+
+      });
+
+      container.innerHTML += `
+
+      <div class="order-box">
+
+        <h3>
+          Order Date:
+          ${order.date}
+        </h3>
+
+        ${itemsHTML}
+
+        <div class="total">
+
+          Total:
+          $${total}
+
+        </div>
+
+      </div>
+
+      `;
+
+    });
+
+  </script>
+
+</body>
+</html>
