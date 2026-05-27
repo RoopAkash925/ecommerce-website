@@ -289,6 +289,27 @@
 
  <script>
 
+  const username =
+  localStorage.getItem("username");
+
+  if(username){
+
+    document.getElementById("userName")
+    .innerHTML =
+    "Hello, " + username;
+
+    document.getElementById("loginLink")
+    .style.display = "none";
+
+  }
+
+  else{
+
+    document.querySelector(".logout-btn")
+    .style.display = "none";
+
+  }
+
   const defaultProducts = [
 
     {
@@ -382,11 +403,20 @@
   function updateCartCount(){
 
     let cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+      total += item.quantity;
+
+    });
 
     document.getElementById("cartCount")
     .innerHTML =
-    `Cart (${cart.length})`;
+    `Cart (${total})`;
 
   }
 
@@ -415,11 +445,11 @@
           ?
           `
           <div class="old-price">
-          $${product.oldPrice}
+          ₹${product.oldPrice}
           </div>
 
           <div class="price">
-          $${product.price}
+          ₹${product.price}
           </div>
 
           <div class="offer-tag">
@@ -429,7 +459,7 @@
           :
           `
           <div class="price">
-          $${product.price}
+          ₹${product.price}
           </div>
           `
         }
@@ -440,7 +470,7 @@
         '${product.image}'
         )">
 
-          Add to Cart
+          Add To Cart
 
         </button>
 
@@ -454,7 +484,9 @@
 
       offerGrid.innerHTML += card;
 
-    }else{
+    }
+
+    else{
 
       trendingGrid.innerHTML += card;
 
@@ -465,7 +497,8 @@
   function addToCart(name,price,image){
 
     let cart =
-    JSON.parse(localStorage.getItem("cart")) || [];
+    JSON.parse(localStorage.getItem("cart"))
+    || [];
 
     const existingProduct =
     cart.find(item => item.name === name);
@@ -474,16 +507,18 @@
 
       existingProduct.quantity++;
 
-    }else{
+    }
 
-      const product = {
+    else{
+
+      cart.push({
+
         name:name,
         price:price,
         image:image,
         quantity:1
-      };
 
-      cart.push(product);
+      });
 
     }
 
@@ -512,9 +547,11 @@
   function openProduct(name,price,image){
 
     const product = {
+
       name:name,
       price:price,
       image:image
+
     };
 
     localStorage.setItem(
@@ -528,6 +565,5 @@
   }
 
 </script>
-
 </body>
 </html>
