@@ -1,0 +1,6 @@
+[build]
+  publish = "."
+  command = "npx drizzle-kit generate"
+
+[functions]
+  directory = "netlify/functions"
